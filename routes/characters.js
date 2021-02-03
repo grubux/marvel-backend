@@ -33,6 +33,7 @@ router.get("/characters", async (req, res) => {
       }
 
       console.log(dataThumbnails);
+      console.log("test");
 
       res.json(response.data);
     })
