@@ -14,7 +14,7 @@ app.use(comicsRoutes);
 app.use(charactersRoutes);
 
 app.get("/", (req, res) => {
-  res.json("Bienvenue sur l'API de Vinted");
+  res.json("Welcome to the MARVEL API");
 });
 
 app.listen(process.env.PORT, () => {
