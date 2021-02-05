@@ -3,7 +3,6 @@ const router = express.Router();
 const formidable = require("express-formidable");
 const cors = require("cors");
 const axios = require("axios");
-const { count } = require("../../../vinted/express-vinted-master/models/User");
 const app = express();
 
 app.use(formidable());
@@ -17,25 +16,33 @@ router.get("/characters", async (req, res) => {
 
   await axios
     .get(
-      `https://lereacteur-marvel-api.herokuapp.com/characters?apiKey=${process.env.apiKey}&limit=100&skip=${itemsSkipped}&name=${characterName}`
+      characterName
+        ? `https://lereacteur-marvel-api.herokuapp.com/characters?apiKey=${process.env.apiKey}&limit=100&skip=${itemsSkipped}&name=${characterName}`
+        : `https://lereacteur-marvel-api.herokuapp.com/characters?apiKey=${process.env.apiKey}&limit=100&skip=${itemsSkipped}`
     )
     .then((response) => {
-      let dataThumbnails = [];
+      let charactersData = [[], { count: response.data.count }];
       let portraitSize = "/portrait_xlarge";
+      // Essayer de faire une regex pour ne pas afficher une image si le path contient image_not_available
+      // const regexpic = new RegExp("(.*)");
 
+      // création de l'objet à envoyer au front, dataSheet
       for (i = 0; i < response.data.results.length; i++) {
         let dataSheet = {
           picture: `${response.data.results[i].thumbnail.path}${portraitSize}.${response.data.results[i].thumbnail.extension}`,
           name: response.data.results[i].name,
           description: response.data.results[i].description,
+          comics: response.data.results[i].comics,
         };
-        dataThumbnails.push(dataSheet);
+        charactersData[0].push(dataSheet);
+        // console.log(response.data.results[i].thumbnail.path === regexpic);
       }
+      // console.log(charactersData);
+      console.log(charactersData[0]);
+      console.log(charactersData[1]);
 
-      console.log(dataThumbnails);
-      console.log("test");
-
-      res.json(response.data);
+      // console.log(charactersData);
+      res.json(charactersData);
     })
     .catch((error) => {
       console.log(error); // Affichera d'éventuelles erreurs, notamment en cas de problème de connexion Internet.
