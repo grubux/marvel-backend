@@ -17,11 +17,12 @@ router.get("/comics/:characterid", async (req, res) => {
       `https://lereacteur-marvel-api.herokuapp.com/comics/${characteridparam}?apiKey=${process.env.apiKey}`
     )
     .then((response) => {
-      let portraitSize = "/portrait_xlarge";
+      let portraitSizeCharacter = "/portrait_uncanny";
+      let portraitSizeComic = "/standard_large";
 
       let characterComicData = [
         {
-          mainpicture: `${response.data.thumbnail.path}${portraitSize}.${response.data.thumbnail.extension}`,
+          mainpicture: `${response.data.thumbnail.path}${portraitSizeCharacter}.${response.data.thumbnail.extension}`,
           name: response.data.name,
           description: response.data.description,
           id: response.data._id,
@@ -30,7 +31,7 @@ router.get("/comics/:characterid", async (req, res) => {
       ];
       for (i = 0; i < response.data.comics.length; i++) {
         let comicsSheet = {
-          comicPicture: `${response.data.comics[i].thumbnail.path}${portraitSize}.${response.data.comics[i].thumbnail.extension}`,
+          comicPicture: `${response.data.comics[i].thumbnail.path}${portraitSizeComic}.${response.data.comics[i].thumbnail.extension}`,
           comicTitle: response.data.comics[i].title,
           comicDescription: response.data.comics[i].description,
         };
