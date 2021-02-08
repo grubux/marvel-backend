@@ -33,6 +33,7 @@ router.get("/characters", async (req, res) => {
           name: response.data.results[i].name,
           description: response.data.results[i].description,
           comics: response.data.results[i].comics,
+          id: response.data.results[i]._id,
         };
         charactersData[0].push(dataSheet);
         // console.log(response.data.results[i].thumbnail.path === regexpic);

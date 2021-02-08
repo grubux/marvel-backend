@@ -11,9 +11,13 @@ app.use(cors());
 require("dotenv").config();
 
 router.get("/comics", async (req, res) => {
+  let itemsSkipped = (req.query.page - 1) * 100;
+  let comicsTitle = req.query.title;
   await axios
     .get(
-      `https://lereacteur-marvel-api.herokuapp.com/comics?apiKey=${process.env.apiKey}`
+      comicsTitle
+        ? `https://lereacteur-marvel-api.herokuapp.com/comics?apiKey=${process.env.apiKey}&limit=100&skip=${itemsSkipped}&title=${comicsTitle}`
+        : `https://lereacteur-marvel-api.herokuapp.com/comics?apiKey=${process.env.apiKey}&limit=100&skip=${itemsSkipped}`
     )
     .then((response) => {
       let comicsData = [[], { count: response.data.count }];
@@ -32,7 +36,9 @@ router.get("/comics", async (req, res) => {
         // console.log(response.data.results[i].thumbnail.path === regexpic);
       }
 
-      console.log(comicsData); // Affichera la réponse du serveur
+      // console.log(comicsData); // Affichera la réponse du serveur
+      // console.log(comicsData);
+      console.log(req.query);
       res.json(comicsData);
     })
     .catch((error) => {

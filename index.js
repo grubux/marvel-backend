@@ -8,10 +8,12 @@ app.use(cors());
 
 require("dotenv").config();
 
+const comicsIdRoutes = require("./routes/comicsid");
 const comicsRoutes = require("./routes/comics");
 const charactersRoutes = require("./routes/characters");
-app.use(comicsRoutes);
 app.use(charactersRoutes);
+app.use(comicsIdRoutes);
+app.use(comicsRoutes);
 
 app.get("/", (req, res) => {
   res.json("Welcome to the MARVEL API");
