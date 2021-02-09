@@ -34,6 +34,7 @@ router.get("/comics/:characterid", async (req, res) => {
           comicPicture: `${response.data.comics[i].thumbnail.path}${portraitSizeComic}.${response.data.comics[i].thumbnail.extension}`,
           comicTitle: response.data.comics[i].title,
           comicDescription: response.data.comics[i].description,
+          comicId: response.data.comics[i]._id,
         };
         characterComicData[1].push(comicsSheet);
       }
